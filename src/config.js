@@ -20,6 +20,9 @@ const config = {
     port: process.env.PORT || 9000,
     privateKey: requireProcessEnv('PRIVATE_KEY'),
     env: requireProcessEnv('ENV'),
+    awsMasterUrl: process.env.SECRET_MASTER_URL,
+    awsMasterName: process.env.SECRET_MASTER_NAME,
+    awsHost: process.env.HOST,
     mongo: {
       createMongo: requireProcessEnv('CREATE_MONGO') === 'true',
       options: {
