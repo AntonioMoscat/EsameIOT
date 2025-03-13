@@ -1,13 +1,13 @@
 import express from 'express';
 import { actions } from './controller';
-import { token } from '../../services/token';
 import { bodySchema } from './model';
+import { token } from '../../services/token';
 import { middleware as query } from 'querymen';
 
 const router = express.Router();
 
 /**
- * @api {get} /recipes Get All Recipes
+ * @api {get} /sensors/ get All Sensors
  * @apiName GetUser
  * @apiGroup User
  *
@@ -19,32 +19,7 @@ const router = express.Router();
 router.get('/', query(bodySchema.query), token({ required: true }), actions.index);
 
 /**
- * @api {get} /recipes/reserch Search Recipe from food's ID
- * @apiName GetUser
- * @apiGroup User
- *
- * @apiParam {Number} id User's unique ID.
- *
- * @apiSuccess {String} firstname Firstname of the User.
- * @apiSuccess {String} lastname  Lastname of the User.
- */
-router.get('/reserch', query(bodySchema.query), token({ required: true }), actions.searchRecipe);
-
-/**
- * @api {get} /recipes/expiring-food Return recipe with expiring foods
- * @apiName GetUser
- * @apiGroup User
- *
- * @apiParam {Number} id User's unique ID.
- *
- * @apiSuccess {String} firstname Firstname of the User.
- * @apiSuccess {String} lastname  Lastname of the User.
- */
-router.get('/expiring-foods',
-  query(bodySchema.query), token({ required: true }), actions.searchRecipeForExpiringFoods);
-
-/**
- * @api {get} /recipes/:id get Specific recipe
+ * @api {get} /sensors/:id Get Specific Sensor
  * @apiName GetUser
  * @apiGroup User
  *
@@ -56,7 +31,7 @@ router.get('/expiring-foods',
 router.get('/:id', query(bodySchema.query), token({ required: true }), actions.show);
 
 /**
- * @api {post} /recipes Create a recipe
+ * @api {post} /sensors/:id Create Sensor
  * @apiName GetUser
  * @apiGroup User
  *
@@ -68,7 +43,7 @@ router.get('/:id', query(bodySchema.query), token({ required: true }), actions.s
 router.post('/', token({ required: true }), actions.create);
 
 /**
- * @api {put} /recipes/:id Update a recipe
+ * @api {put} /sensors/:id Update Sensor
  * @apiName GetUser
  * @apiGroup User
  *
@@ -80,7 +55,7 @@ router.post('/', token({ required: true }), actions.create);
 router.put('/:id', token({ required: true }), actions.update);
 
 /**
- * @api {delete} /recipes/:id Delete a recipe
+ * @api {delete} /sensors/:id Destroy Sensor
  * @apiName GetUser
  * @apiGroup User
  *

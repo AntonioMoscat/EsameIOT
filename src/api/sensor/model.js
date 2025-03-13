@@ -9,28 +9,28 @@ let schema = {
     trim: true,
     lowercase: true,
   },
-  userId: {
-    type: Schema.ObjectId,
-    required: true,
+  // userId: {
+  //   type: Schema.ObjectId,
+  //   required: true,
 
-    virtualPopulation: {
-      odinAutoPopulation: true,
-      as: 'User',
-      options: {
-        ref: 'User',
-        foreignField: '_id',
-        localField: 'userId',
-        justOne: true,
-      },
-    },
-  }
+  //   virtualPopulation: {
+  //     odinAutoPopulation: true,
+  //     as: 'User',
+  //     options: {
+  //       ref: 'User',
+  //       foreignField: '_id',
+  //       localField: 'userId',
+  //       justOne: true,
+  //     },
+  //   },
+  // }
 };
 
 const model = ModelGenerator(mongoose)(
   {
     schema,
-    collectionName: 'cookBooks',
-    modelName: 'Cookbook',
+    collectionName: 'sensors',
+    modelName: 'Sensor',
     extensionFunction: () => { }
   }
 );

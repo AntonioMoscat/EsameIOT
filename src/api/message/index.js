@@ -1,13 +1,13 @@
 import express from 'express';
-import { token } from '../../services/token';
 import { actions } from './controller';
 import { bodySchema } from './model';
+import { token } from '../../services/token';
 import { middleware as query } from 'querymen';
 
 const router = express.Router();
 
 /**
- * @api {get} /locations  Show all locations
+ * @api {get} /messages/ get All Messages
  * @apiName GetUser
  * @apiGroup User
  *
@@ -19,7 +19,7 @@ const router = express.Router();
 router.get('/', query(bodySchema.query), token({ required: true }), actions.index);
 
 /**
- * @api {get} /locations/:id Select Specific Location
+ * @api {get} /messages/:id Get Specific Message
  * @apiName GetUser
  * @apiGroup User
  *
@@ -28,10 +28,10 @@ router.get('/', query(bodySchema.query), token({ required: true }), actions.inde
  * @apiSuccess {String} firstname Firstname of the User.
  * @apiSuccess {String} lastname  Lastname of the User.
  */
-router.get('/:id', query(bodySchema.query), token({ require: true }), actions.show);
+router.get('/:id', query(bodySchema.query), token({ required: true }), actions.show);
 
 /**
- * @api {post} /locations Create Location
+ * @api {post} /messages/:id Create Message
  * @apiName GetUser
  * @apiGroup User
  *
@@ -43,7 +43,7 @@ router.get('/:id', query(bodySchema.query), token({ require: true }), actions.sh
 router.post('/', token({ required: true }), actions.create);
 
 /**
- * @api {put} /locations/:id Update Location
+ * @api {put} /messages/:id Update Message
  * @apiName GetUser
  * @apiGroup User
  *
@@ -55,7 +55,7 @@ router.post('/', token({ required: true }), actions.create);
 router.put('/:id', token({ required: true }), actions.update);
 
 /**
- * @api {delete} /locations/:id Delete Location
+ * @api {delete} /messages/:id Destroy Message
  * @apiName GetUser
  * @apiGroup User
  *
@@ -65,6 +65,5 @@ router.put('/:id', token({ required: true }), actions.update);
  * @apiSuccess {String} lastname  Lastname of the User.
  */
 router.delete('/:id', token({ required: true }), actions.destroy);
-
 
 export default router;
