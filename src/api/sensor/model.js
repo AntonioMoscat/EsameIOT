@@ -6,8 +6,15 @@ let schema = {
   name: {
     type: String,
     required: true,
-    trim: true,
-    lowercase: true,
+  },
+  arn: {
+    type: String
+  },
+  attribute: {
+    type: Object
+  },
+  version: {
+    type: Number
   },
   // userId: {
   //   type: Schema.ObjectId,

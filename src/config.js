@@ -22,7 +22,9 @@ const config = {
     env: requireProcessEnv('ENV'),
     awsMasterUrl: process.env.SECRET_MASTER_URL,
     awsMasterName: process.env.SECRET_MASTER_NAME,
-    awsHost: process.env.HOST,
+    iotEndpoint: process.env.IOT_ENDPOINT,
+    accessKey: process.env.ACCESS_KEY_ID,
+    secretKey: process.env.SECRET_ACCESS_KEY,
     mongo: {
       createMongo: requireProcessEnv('CREATE_MONGO') === 'true',
       options: {
