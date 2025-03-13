@@ -8,7 +8,7 @@ export function generateHexColor() {
 }
 
 export const generateBulkOperations = (data, operation = 'insert') => {
-  if (!Array.isArray(data) || data.length === 0) {
+  if (!Array.isArray(data) || _.isEmpty(data)) {
     throw new Error('Data must be a non-empty array');
   }
 

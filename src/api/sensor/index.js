@@ -16,7 +16,7 @@ const router = express.Router();
  * @apiSuccess {String} firstname Firstname of the User.
  * @apiSuccess {String} lastname  Lastname of the User.
  */
-router.get('/', query(bodySchema.query), token({ required: true }), actions.index);
+router.get('/', query(bodySchema.query), actions.index);
 
 /**
  * @api {get} /sensors/:id Get Specific Sensor
@@ -28,7 +28,7 @@ router.get('/', query(bodySchema.query), token({ required: true }), actions.inde
  * @apiSuccess {String} firstname Firstname of the User.
  * @apiSuccess {String} lastname  Lastname of the User.
  */
-router.get('/:id', query(bodySchema.query), token({ required: true }), actions.show);
+router.get('/:id', query(bodySchema.query), actions.show);
 
 /**
  * @api {post} /sensors/:id Create Sensor
@@ -40,7 +40,7 @@ router.get('/:id', query(bodySchema.query), token({ required: true }), actions.s
  * @apiSuccess {String} firstname Firstname of the User.
  * @apiSuccess {String} lastname  Lastname of the User.
  */
-router.post('/', token({ required: true }), actions.create);
+router.post('/', actions.create);
 
 /**
  * @api {put} /sensors/:id Update Sensor
@@ -52,7 +52,7 @@ router.post('/', token({ required: true }), actions.create);
  * @apiSuccess {String} firstname Firstname of the User.
  * @apiSuccess {String} lastname  Lastname of the User.
  */
-router.put('/:id', token({ required: true }), actions.update);
+router.put('/:id', actions.update);
 
 /**
  * @api {delete} /sensors/:id Destroy Sensor
@@ -64,6 +64,6 @@ router.put('/:id', token({ required: true }), actions.update);
  * @apiSuccess {String} firstname Firstname of the User.
  * @apiSuccess {String} lastname  Lastname of the User.
  */
-router.delete('/:id', token({ required: true }), actions.destroy);
+router.delete('/:id', actions.destroy);
 
 export default router;

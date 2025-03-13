@@ -1,20 +1,23 @@
 import mongoose, { Schema } from 'mongoose';
 import ModelGenerator from '../_generator/modelGenerator';
 import ValidateSchema from '../_generator/validateSchema';
+import { alarmTriggerRequirment, AlarmTriggerRequirmentEnum } from '../_utils/enum';
 
 let schema = {
-  timestamp: {
-    type: Number
+  name: {
+    type: String,
+    required: true,
   },
-  hum: {
-    type: Number
+  triggerValue: {
+    type: Number,
+    required: true,
+    default: 20
   },
-  value: {
-    type: Number
+  triggerRequirment: {
+    type: String,
+    enum: alarmTriggerRequirment,
+    default: AlarmTriggerRequirmentEnum.BOTH
   },
-  sensorCode: {
-    type: String
-  }
   // userId: {
   //   type: Schema.ObjectId,
   //   required: true,
@@ -35,8 +38,8 @@ let schema = {
 const model = ModelGenerator(mongoose)(
   {
     schema,
-    collectionName: 'messages',
-    modelName: 'Message',
+    collectionName: 'alarm-triggers',
+    modelName: 'Alarm-trigger',
     extensionFunction: () => { }
   }
 );

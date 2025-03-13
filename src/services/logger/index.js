@@ -1,8 +1,8 @@
 const { createLogger, format, transports } = require('winston');
-const { combine, timestamp, printf, colorize } = format;
+const { combine, timestamp, printf } = format;
 const expressWinston = require('express-winston');
 
-// formatting console message 
+// formatting console message
 const consoleFormat = printf(({ level, message, timestamp }) => {
   return `${timestamp} ${level}: ${message}`;
 });
@@ -31,6 +31,11 @@ const logger = createLogger({
     new transports.File({
       level: 'errors',
       filename: 'logs/error.log',
+      format: fileFormat
+    }),
+    new transports.File({
+      level: 'warn',
+      filename: 'logs/warn.log',
       format: fileFormat
     }),
 
