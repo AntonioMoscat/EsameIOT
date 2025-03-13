@@ -16,6 +16,15 @@ let schema = {
   version: {
     type: Number
   },
+  arn: {
+    type: String
+  },
+  attribute: {
+    type: Object
+  },
+  version: {
+    type: Number
+  }
   // userId: {
   //   type: Schema.ObjectId,
   //   required: true,

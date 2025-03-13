@@ -3,11 +3,10 @@ export const RolesEnum = {
   ADMIN: 'admin',
 };
 
-export const RecipeIngridientMeasurementUnitEnum = {
-  KG: 'kg',
-  G: 'g',
-  L: 'l',
-  ML: 'ml'
+export const AlarmTriggerRequirmentEnum = {
+  ABOVE: 'above',
+  BELOW: 'below',
+  BOTH: 'both'
 };
 
-export const recipeIngridientMeasurement = Object.values(RecipeIngridientMeasurementUnitEnum);
+export const alarmTriggerRequirment = Object.values(AlarmTriggerRequirmentEnum);

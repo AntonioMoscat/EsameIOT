@@ -14,7 +14,7 @@ const token = ({ required, master, roles /*= User.roles*/ } = {}) => (req, res, 
     }
 
     //TODO: add role control for token
-    req.userId = verifyToken(token);
+    req.user = verifyToken(token);
     return next();
   } catch (err) {
     logger.error(err.message);
@@ -35,7 +35,7 @@ function verifyToken(token) {
     throw new Error(err.message);
   }
 
-  return decoded['id'];
+  return decoded;
 }
 
 module.exports = {
