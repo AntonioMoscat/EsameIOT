@@ -4,17 +4,17 @@ import ValidateSchema from '../_generator/validateSchema';
 
 let schema = {
   timestamp: {
-    type: Number
+    type: Number,
   },
   hum: {
-    type: Number
+    type: Number,
   },
   value: {
-    type: Number
+    type: Number,
   },
   sensorCode: {
-    type: String
-  }
+    type: String,
+  },
   // userId: {
   //   type: Schema.ObjectId,
   //   required: true,
@@ -32,14 +32,19 @@ let schema = {
   // }
 };
 
-const model = ModelGenerator(mongoose)(
-  {
-    schema,
-    collectionName: 'messages',
-    modelName: 'Message',
-    extensionFunction: () => { }
-  }
-);
+const model = ModelGenerator(mongoose)({
+  schema,
+  timeSeries: {
+    timeseries: {
+      timeField: 'timestamp',
+      metaField: 'sensorCode',
+      granularity: 'seconds',
+    },
+  },
+  collectionName: 'messages',
+  modelName: 'Message',
+  extensionFunction: () => {},
+});
 
 export const bodySchema = ValidateSchema(schema);
 export default model;

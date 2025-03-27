@@ -1,14 +1,12 @@
 const { Schema } = require('mongoose');
 
 // Funzione di utilità per controllare se un campo è un array di oggetti
-const isArrayOfObjects = (field) =>
-  Array.isArray(field.type) && field.type.length > 0 && field.type[0]?.obj;
+const isArrayOfObjects = field => Array.isArray(field.type) && field.type.length > 0 && field.type[0]?.obj;
 
 // Funzione di utilità per capitalizzare i riferimenti
-const capitalizeRef = (name) =>
-  name.charAt(0).toUpperCase() + name.slice(1, -2);
+const capitalizeRef = name => name.charAt(0).toUpperCase() + name.slice(1, -2);
 
-export function schemaGeneration(entitySchema) {
+export function schemaGeneration(entitySchema, timeSeries) {
   let virtuals = createVirtuals(entitySchema);
 
   //rimozione dei campi dallo schema se sono dei campi virtuali
@@ -37,7 +35,7 @@ export function schemaGeneration(entitySchema) {
       });
     }
   });
-  let schema = new Schema(entitySchema, { timestamps: { createdAt: 'createAt' } });
+  let schema = new Schema(entitySchema, timeSeries, { timestamps: { createdAt: 'createAt' } });
 
   virtuals.forEach(val => {
     schema.virtual(val.as, val.options);
@@ -69,7 +67,7 @@ export function createVirtuals(entitySchema) {
         as: field.virtual ? elementName : virPop.as || `${elementName.slice(0, -2)}`,
         options: virPop.options,
         autoPopulate: virPop.odinAutoPopulation,
-        populate: virPop.options?.options
+        populate: virPop.options?.options,
       });
     }
   });
