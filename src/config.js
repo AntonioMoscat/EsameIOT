@@ -5,7 +5,7 @@ require('dotenv').config();
 global.logger = logger;
 global._ = _;
 
-const requireProcessEnv = (name) => {
+const requireProcessEnv = name => {
   if (!process.env[name]) {
     throw new Error('La variabile ' + name + ' è necessario per il corretto funzionamento del server');
   }
@@ -29,9 +29,9 @@ const config = {
       createMongo: requireProcessEnv('CREATE_MONGO') === 'true',
       options: {
         strictQuery: false,
-        strictPopulate: false
-      }
-    }
+        strictPopulate: false,
+      },
+    },
   },
 
   test: {
@@ -39,16 +39,16 @@ const config = {
       uri: `mongodb://localhost:27888/${APP_NAME}-test`,
       options: {
         debug: false,
-      }
-    }
+      },
+    },
   },
   development: {
     mongo: {
       uri: process.env.MONGODB_URI || `mongodb://localhost:27888/${APP_NAME}-dev`,
       options: {
         debug: true,
-      }
-    }
+      },
+    },
   },
   production: {
     ip: process.env.IP,
@@ -56,7 +56,7 @@ const config = {
     expressSSLRedirect: process.env.DISABLE_SSL_REDIRECT !== 'true',
     mongo: {
       uri: process.env.MONGODB_URI || `mongodb://localhost:27888/${APP_NAME}`,
-    }
-  }
+    },
+  },
 };
 module.exports = _.merge(config.all, config[config.all.env]);

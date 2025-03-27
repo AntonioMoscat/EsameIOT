@@ -4,7 +4,7 @@ import ValidateSchema from '../_generator/validateSchema';
 
 let schema = {
   timestamp: {
-    type: Number,
+    type: Date,
   },
   hum: {
     type: Number,

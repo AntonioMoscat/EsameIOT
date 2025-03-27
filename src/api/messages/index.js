@@ -1,7 +1,6 @@
 import express from 'express';
 import { actions } from './controller';
 import { bodySchema } from './model';
-import { token } from '../../services/token';
 import { middleware as query } from 'querymen';
 
 const router = express.Router();
@@ -31,7 +30,7 @@ router.get('/', query(bodySchema.query), actions.index);
 router.get('/:id', query(bodySchema.query), actions.show);
 
 /**
- * @api {post} /messages/:id Create Message
+ * @api {post} /messages Create Message
  * @apiName GetUser
  * @apiGroup User
  *

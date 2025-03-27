@@ -8,23 +8,23 @@ let schema = {
     required: true,
   },
   arn: {
-    type: String
+    type: String,
   },
   attribute: {
-    type: Object
+    type: Object,
   },
   version: {
-    type: Number
+    type: Number,
   },
   arn: {
-    type: String
+    type: String,
   },
   attribute: {
-    type: Object
+    type: Object,
   },
   version: {
-    type: Number
-  }
+    type: Number,
+  },
   // userId: {
   //   type: Schema.ObjectId,
   //   required: true,
@@ -42,14 +42,12 @@ let schema = {
   // }
 };
 
-const model = ModelGenerator(mongoose)(
-  {
-    schema,
-    collectionName: 'sensors',
-    modelName: 'Sensor',
-    extensionFunction: () => { }
-  }
-);
+const model = ModelGenerator(mongoose)({
+  schema,
+  collectionName: 'sensors',
+  modelName: 'Sensor',
+  extensionFunction: () => {},
+});
 
 export const bodySchema = ValidateSchema(schema);
 export default model;
