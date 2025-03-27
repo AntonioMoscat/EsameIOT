@@ -3,8 +3,9 @@ const _ = require('lodash');
 const fs = require('fs');
 const dummy = require('mongoose-dummy');
 const appRoot = require('app-root-path');
+require('@babel/register');
 
-let allModules = {};
+let allModels = {};
 
 const docsDir = path.join(appRoot.toString(), './docs');
 const entityDir = docsDir + '/entities';
@@ -22,7 +23,7 @@ fs.readdirSync(appRoot.toString() + '/src/api')
   .filter(a => fs.statSync(a.module).isDirectory())
   .forEach(a => {
     if (fs.existsSync(path.join(a.module, '/model.js'))) {
-      allModules[a.name] = require(path.join(a.module, '/model.js'));
+      allModels[a.name] = require(path.join(a.module, '/model.js')).default;
     }
   });
 
@@ -32,7 +33,8 @@ try {
 } catch (e) {
   console.log('Output directory already exists');
 }
-_.forEach(allModules, model => {
+
+_.forEach(allModels, model => {
   let toWrite = '';
   let randomObject = dummy(model, {
     autoDetect: false,
