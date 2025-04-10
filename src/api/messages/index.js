@@ -26,6 +26,9 @@ router.get('/', query({
     type: Date,
     paths: ['timeStamp'],
     operator: '$lte'
+  },
+  sensorCodes: {
+    type: [String]
   }
 }), actions.index);
 
