@@ -3,10 +3,13 @@ export const aggregateMessage = (query, select, cursor) => {
     {
       $group: {
         _id: {
-          $dateTrunc: {
-            date: '$timestamp',
-            unit: 'minute',
-            binSize: 5
+          sensorCode: '$sensorCode',
+          truncatedTimestamp: {
+            $dateTrunc: {
+              date: '$timestamp',
+              unit: 'minute',
+              binSize: 5
+            }
           }
         },
         sensorCode: { $first: '$sensorCode' },
@@ -19,7 +22,7 @@ export const aggregateMessage = (query, select, cursor) => {
     { $limit: cursor?.limit || 100 }
   ];
 
-  if (!_.isNil(select)) {
+  if (!_.isEmpty(select)) {
     pipeline.push({ $project: select });
   }
 
