@@ -3,11 +3,12 @@ import express from 'express';
 import http from 'http';
 import api from './api';
 import { mongo } from './config';
+import iot from './services/iot';
 
 const app = express(api);
 
 const server = http.createServer(app);
-
+iot;
 setImmediate(async () => {
   if (mongo.createMongo) {
     await mongoose.connect(mongo.uri, {});
