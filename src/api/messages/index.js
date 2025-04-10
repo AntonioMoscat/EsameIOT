@@ -19,12 +19,12 @@ router.get('/', query({
   ...bodySchema.query,
   'timestamp.$gte': {
     type: Date,
-    paths: ['timeStamp'],
+    paths: ['timestamp'],
     operator: '$gte'
   },
   'timestamp.$lte': {
     type: Date,
-    paths: ['timeStamp'],
+    paths: ['timestamp'],
     operator: '$lte'
   },
   sensorCodes: {
