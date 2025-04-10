@@ -1,3 +1,5 @@
+import SensorModel from '../../sensors/model';
+
 export async function syncSensor(doc, next) {
   try {
     logger.info('Syncing sensor from message');
