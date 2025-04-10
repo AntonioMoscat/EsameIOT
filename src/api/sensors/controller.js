@@ -8,8 +8,6 @@ const actions = FunctionGeneration(Entity);
 actions.importAllSensor = async ({ params: { iotCode, clientId, laiType } }, res) => {
   try {
     await checkMasterCertificate();
-    console.log('cert create');
-    console.log(await device());
 
     let thing = await createThing({ iotCode, clientId, laiType });
     console.log(thing);

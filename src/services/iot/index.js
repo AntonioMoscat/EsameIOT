@@ -1,7 +1,7 @@
 import config from '../../config';
 import logger from '../logger/index';
 import Message from '../../api/messages/model';
-import Sensor from '../../api/sensor/model';
+import Sensor from '../../api/sensors/model';
 import { checkMasterCertificate } from './getCertificate';
 import awsIot from 'aws-iot-device-sdk';
 import { IoTDataPlaneClient, GetThingShadowCommand } from '@aws-sdk/client-iot-data-plane';
