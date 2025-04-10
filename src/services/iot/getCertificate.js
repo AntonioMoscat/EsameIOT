@@ -1,69 +1,56 @@
 import config from '../../config';
+import fs from 'fs/promises';
+import { existsSync, createWriteStream } from 'fs';
+import https from 'https';
+import os from 'os';
 
-const fs = require('fs');
-const http = require('https');
-const os = require('os');
+const { awsMasterUrl, awsMasterName } = config;
 
-const {awsMasterUrl, awsMasterName} = config;
+export async function checkMasterCertificate() {
+  const certPath = `${os.tmpdir()}/${awsMasterName}.certificate.pem.crt`;
+  const keyPath = `${os.tmpdir()}/${awsMasterName}.private.pem.key`;
+  const rootCAPath = `${os.tmpdir()}/AmazonRootCA1.pem`;
 
-export function checkMasterCertificate() {
-    return new Promise((resolve, reject) => {
-        try {
-            const file = fs.readFileSync(`${os.tmpdir()}/${awsMasterName}.pem.crt`);
-            resolve();
-        } catch (err) {
-            const finishedActions = [];
-            const cert = fs.createWriteStream(`${os.tmpdir()}/${awsMasterName}.certificate.pem.crt`);
-            const privateKey = fs.createWriteStream(`${os.tmpdir()}/${awsMasterName}.private.pem.key`);
-            const amazonRoot = fs.createWriteStream(`${os.tmpdir()}/AmazonRootCA1.pem`)
-            console.log(`${os.tmpdir()}/${awsMasterName}.private.pem.key`)
-            http.get(`${awsMasterUrl}/${awsMasterName}.certificate.pem.crt`, function (response) {
-                response.pipe(cert);
-            }); 
+  if (existsSync(certPath) && existsSync(keyPath) && existsSync(rootCAPath)) {
+    return { certPath, keyPath, rootCAPath };
+  }
 
-            http.get(`${awsMasterUrl}/${awsMasterName}.private.pem.key`, function (response) {
-                response.pipe(privateKey);
-            });
+  const downloadPromises = [
+    downloadFile(`${awsMasterUrl}/${awsMasterName}.certificate.pem.crt`, certPath),
+    downloadFile(`${awsMasterUrl}/${awsMasterName}.private.pem.key`, keyPath),
+    downloadFile(`${awsMasterUrl}/AmazonRootCA1.pem`, rootCAPath),
+  ];
 
-            http.get(`${awsMasterUrl}/AmazonRootCA1.pem`, function (response) {
-                response.pipe(amazonRoot);
-            });
+  await Promise.all(downloadPromises);
+  return { certPath, keyPath, rootCAPath };
+}
 
-            cert.on('finish', function () {
-                finishedActions.push(true)
+function downloadFile(url, destination) {
+  return new Promise((resolve, reject) => {
+    const file = createWriteStream(destination);
 
-                if (finishedActions.length === 3) {
-                    resolve();
-                }
-            });
-
-            cert.on('error', function () {
-                reject();
-            });
-
-            amazonRoot.on('finish', function () {
-                finishedActions.push(true)
-
-                if (finishedActions.length === 3) {
-                    resolve();
-                }
-            });
-
-            amazonRoot.on('error', function () {
-                reject();
-            });
-
-            privateKey.on('finish', function () {
-                finishedActions.push(true)
-
-                if (finishedActions.length === 3) {
-                    resolve();
-                }
-            });
-
-            privateKey.on('error', function () {
-                reject();
-            });
+    https
+      .get(url, response => {
+        if (response.statusCode !== 200) {
+          reject(new Error(`Failed to download: ${response.statusCode}`));
+          return;
         }
+
+        response.pipe(file);
+
+        file.on('finish', () => {
+          file.close();
+          resolve(destination);
+        });
+      })
+      .on('error', err => {
+        fs.unlink(destination).catch(() => {});
+        reject(err);
+      });
+
+    file.on('error', err => {
+      fs.unlink(destination).catch(() => {});
+      reject(err);
     });
+  });
 }

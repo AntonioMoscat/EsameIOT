@@ -47,7 +47,6 @@ export async function initDevice() {
       logger.info('message received');
       try {
         const data = JSON.parse(payload.toString());
-        console.log('Received data:', data);
 
         await Message.create(data);
 
@@ -102,9 +101,9 @@ export async function getShadow(thingName) {
     const command = new GetThingShadowCommand({ thingName });
     const response = await iot.send(command);
     const payload = JSON.parse(new TextDecoder().decode(response.payload));
-    console.log('Shadow:', payload);
+    logger.info(`Shadow: ${payload}`);
   } catch (error) {
-    console.error('Errore nel recupero dello shadow:', error);
+    logger.error('Errore nel recupero dello shadow:', error);
   }
 }
 
