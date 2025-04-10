@@ -1,14 +1,11 @@
 import config from '../../config';
 import logger from '../logger/index';
 import Message from '../../api/messages/model';
-import Alarm from '../../api/alarms/model';
-import Sensor from '../../api/sensors/model';
 import { checkMasterCertificate } from './getCertificate';
 import awsIot from 'aws-iot-device-sdk';
 import { IoTDataPlaneClient, GetThingShadowCommand } from '@aws-sdk/client-iot-data-plane';
 
 import os from 'os';
-import { AlarmStatusEnum } from '../../api/_utils/enum';
 import { createAlarms } from '../../api/alarms/middelware';
 
 const { awsMasterUrl, iotEndpoint, awsMasterName, accessKey, secretKey } = config;
@@ -34,12 +31,12 @@ export async function initDevice() {
     });
 
     deviceInstance.on('connect', function () {
-      logger.info('system connected to aws iot...');
+      logger.info('\x1b[33mAWS\x1b[0m: system connected to aws iot...');
       deviceInstance.subscribe('machines');
       deviceInstance.subscribe('sensors/#');
-      logger.info(deviceInstance);
+      logger.info(`\x1b[33mAWS\x1b[0m: ${deviceInstance}`);
 
-      logger.info('mqtt parser ready...');
+      logger.info('\x1b[33mAWS\x1b[0m: mqtt parser ready...');
     });
 
     deviceInstance.on('error', function (e) {
@@ -47,7 +44,7 @@ export async function initDevice() {
     });
 
     deviceInstance.on('message', async function (topic, payload) {
-      logger.info('message received');
+      logger.info('\x1b[33mAWS\x1b[0m: message received');
       try {
         const data = JSON.parse(payload.toString());
 
@@ -64,43 +61,8 @@ export async function initDevice() {
   }
 }
 
-export function createThing(thing) {
-  let params = {
-    thingName: thing.iotCode,
-    attributePayload: {
-      attributes: {
-        clientId: thing.clientId.toString(),
-        laiType: thing.type,
-        billingGroupName: 'lai',
-      },
-    },
-  };
-  const promise = new Promise((resolve, reject) => {
-    iot.createThing(params, function (err, data) {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(data);
-      }
-    });
-  });
-
-  return promise;
-}
-
-export async function getShadow(thingName) {
-  try {
-    const command = new GetThingShadowCommand({ thingName });
-    const response = await iot.send(command);
-    const payload = JSON.parse(new TextDecoder().decode(response.payload));
-    logger.info(`Shadow: ${payload}`);
-  } catch (error) {
-    logger.error('Errore nel recupero dello shadow:', error);
-  }
-}
-
 export async function deleteThing(thing) {
-  logger.warn('init deleting a thing from AWS');
+  logger.warn('\x1b[33mAWS\x1b[0m: init deleting a thing from AWS');
 
   if (!thing.iotCode) {
     throw new Error('unable to delete from AWS without iotCode');
