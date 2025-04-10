@@ -10,3 +10,10 @@ export const AlarmTriggerRequirmentEnum = {
 };
 
 export const alarmTriggerRequirment = Object.values(AlarmTriggerRequirmentEnum);
+
+export const AlarmStatusEnum = {
+  TRIGGER: 'trigger',
+  RESOLVE: 'resolve'
+};
+
+export const alarmStatus = Object.values(AlarmStatusEnum);

@@ -1,12 +1,15 @@
 import config from '../../config';
 import logger from '../logger/index';
 import Message from '../../api/messages/model';
+import Alarm from '../../api/alarms/model';
 import Sensor from '../../api/sensors/model';
 import { checkMasterCertificate } from './getCertificate';
 import awsIot from 'aws-iot-device-sdk';
 import { IoTDataPlaneClient, GetThingShadowCommand } from '@aws-sdk/client-iot-data-plane';
 
 import os from 'os';
+import { AlarmStatusEnum } from '../../api/_utils/enum';
+import { createAlarms } from '../../api/alarms/middelware';
 
 const { awsMasterUrl, iotEndpoint, awsMasterName, accessKey, secretKey } = config;
 
@@ -48,7 +51,10 @@ export async function initDevice() {
       try {
         const data = JSON.parse(payload.toString());
 
-        await Message.create(data);
+
+        const message = await Message.create(data);
+
+        await createAlarms(message, data);
 
         if (data.sensorId) {
           const sensor = await Sensor.findOne({ arn: data.sensorId });
