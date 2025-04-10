@@ -28,7 +28,7 @@ router.get('/', query(bodySchema.query), actions.index);
  * @apiSuccess {String} firstname Firstname of the User.
  * @apiSuccess {String} lastname  Lastname of the User.
  */
-router.get('/catchAll', query(bodySchema.query), actions.getAll);
+router.get('/import-all', query(bodySchema.query), actions.importAllSensor);
 
 /**
  * @api {get} /sensors/:id Get Specific Sensor

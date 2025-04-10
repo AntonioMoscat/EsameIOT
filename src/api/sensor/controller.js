@@ -5,7 +5,7 @@ import { checkMasterCertificate } from '../../services/iot/getCertificate.js';
 
 const actions = FunctionGeneration(Entity);
 
-actions.getAll = async ({ params: { iotCode, clientId, laiType } }, res) => {
+actions.importAllSensor = async ({ params: { iotCode, clientId, laiType } }, res) => {
   try {
     await checkMasterCertificate();
     console.log('cert create');
@@ -16,7 +16,7 @@ actions.getAll = async ({ params: { iotCode, clientId, laiType } }, res) => {
 
     res.status(300).send(thing);
   } catch (err) {
-    console.log(err);
+    logger.error(err);
     res.send(err);
   }
 };
