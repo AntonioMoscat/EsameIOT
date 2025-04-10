@@ -21,10 +21,7 @@ const iot = new IoTDataPlaneClient({
 let deviceInstance = null;
 export async function initDevice() {
   try {
-    const isCertificate = Promise.reject(await checkMasterCertificate());
-    if (isCertificate) {
-      throw new Error('Impossible create certificate');
-    }
+    await checkMasterCertificate();
 
     deviceInstance = awsIot.device({
       keyPath: `${os.tmpdir()}/${awsMasterName}.private.pem.key`,
