@@ -16,28 +16,13 @@ let schema = {
   version: {
     type: Number,
   },
-  // userId: {
-  //   type: Schema.ObjectId,
-  //   required: true,
-
-  //   virtualPopulation: {
-  //     odinAutoPopulation: true,
-  //     as: 'User',
-  //     options: {
-  //       ref: 'User',
-  //       foreignField: '_id',
-  //       localField: 'userId',
-  //       justOne: true,
-  //     },
-  //   },
-  // }
 };
 
 const model = ModelGenerator(mongoose)({
   schema,
   collectionName: 'sensors',
   modelName: 'Sensor',
-  extensionFunction: () => { },
+  extensionFunction: () => {},
 });
 
 export const bodySchema = ValidateSchema(schema);

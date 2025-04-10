@@ -51,22 +51,7 @@ export async function initDevice() {
       try {
         const data = JSON.parse(payload.toString());
 
-
-        const message = await Message.create(data);
-
-        await createAlarms(message, data);
-
-        if (data.sensorId) {
-          const sensor = await Sensor.findOne({ arn: data.sensorId });
-          if (sensor) {
-            sensor.attribute = {
-              ...sensor.attribute,
-              lastReading: data.value,
-              timestamp: data.timestamp || new Date(),
-            };
-            await sensor.save();
-          }
-        }
+        await Message.create(data);
       } catch (error) {
         logger.error(`Error processing message: ${error}`);
       }
