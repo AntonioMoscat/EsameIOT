@@ -19,7 +19,7 @@ const router = express.Router();
 router.get('/', query(bodySchema.query), actions.index);
 
 /**
- * @api {get} /sensors/catchAll Get all sensor data from aws
+ * @api {get} /sensors/import-all Get all sensor data from aws
  * @apiName GetUser
  * @apiGroup User
  *
