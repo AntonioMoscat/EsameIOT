@@ -18,38 +18,62 @@ const iot = new IoTDataPlaneClient({
   region: 'eu-west-1',
 });
 
-let device;
+let deviceInstance = null;
 export async function initDevice() {
-  const isCertificate = Promise.reject(await checkMasterCertificate());
-  if (isCertificate) {
-    throw new Error('Impossible create certificate');
+  try {
+    const isCertificate = Promise.reject(await checkMasterCertificate());
+    if (isCertificate) {
+      throw new Error('Impossible create certificate');
+    }
+
+    deviceInstance = awsIot.device({
+      keyPath: `${os.tmpdir()}/${awsMasterName}.private.pem.key`,
+      certPath: `${os.tmpdir()}/${awsMasterName}.certificate.pem.crt`,
+      caPath: `${os.tmpdir()}/AmazonRootCA1.pem`,
+      host: iotEndpoint,
+    });
+
+    deviceInstance.on('connect', function () {
+      logger.info('system connected to aws iot...');
+      deviceInstance.subscribe('machines');
+      deviceInstance.subscribe('sensors/#');
+      logger.info(deviceInstance);
+
+      logger.info('mqtt parser ready...');
+    });
+
+    deviceInstance.on('error', function (e) {
+      return e;
+    });
+
+    deviceInstance.on('message', async function (topic, payload) {
+      logger.info('message received');
+      try {
+        const data = JSON.parse(payload.toString());
+        console.log('Received data:', data);
+
+        await Message.create(data);
+
+        if (data.sensorId) {
+          const sensor = await Sensor.findOne({ arn: data.sensorId });
+          if (sensor) {
+            sensor.attribute = {
+              ...sensor.attribute,
+              lastReading: data.value,
+              timestamp: data.timestamp || new Date(),
+            };
+            await sensor.save();
+          }
+        }
+      } catch (error) {
+        logger.error(`Error processing message: ${error}`);
+      }
+    });
+    return deviceInstance;
+  } catch (error) {
+    logger.error(`Failed to initialize AWS IoT device: ${error}`);
+    throw error;
   }
-
-  device = awsIot.device({
-    keyPath: `${os.tmpdir()}/${awsMasterName}.private.pem.key`,
-    certPath: `${os.tmpdir()}/${awsMasterName}.certificate.pem.crt`,
-    caPath: `${os.tmpdir()}/AmazonRootCA1.pem`,
-    host: iotEndpoint,
-  });
-
-  device.on('connect', function () {
-    logger.info('system connected to aws iot...');
-    device.subscribe('machines');
-    logger.info(device);
-
-    logger.info('mqtt parser ready...');
-  });
-
-  device.on('error', function (e) {
-    return e;
-  });
-
-  device.on('message', async function (topic, payload) {
-    logger.info('message received');
-    console.log(topic, JSON.parse(payload));
-
-    await Message.create(JSON.parse(payload));
-  });
 }
 
 export function createThing(thing) {
