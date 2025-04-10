@@ -1,7 +1,6 @@
 import express from 'express';
 import { actions } from './controller';
 import { bodySchema } from './model';
-import { token } from '../../services/token';
 import { middleware as query } from 'querymen';
 
 const router = express.Router();
