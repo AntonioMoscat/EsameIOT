@@ -16,30 +16,6 @@ let schema = {
   version: {
     type: Number,
   },
-  arn: {
-    type: String,
-  },
-  attribute: {
-    type: Object,
-  },
-  version: {
-    type: Number,
-  },
-  // userId: {
-  //   type: Schema.ObjectId,
-  //   required: true,
-
-  //   virtualPopulation: {
-  //     odinAutoPopulation: true,
-  //     as: 'User',
-  //     options: {
-  //       ref: 'User',
-  //       foreignField: '_id',
-  //       localField: 'userId',
-  //       justOne: true,
-  //     },
-  //   },
-  // }
 };
 
 const model = ModelGenerator(mongoose)({
