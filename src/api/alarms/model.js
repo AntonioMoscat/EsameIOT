@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import ModelGenerator from '../_generator/modelGenerator';
 import ValidateSchema from '../_generator/validateSchema';
-import { alarmTriggerRequirment, AlarmTriggerRequirmentEnum } from '../_utils/enum';
+import { alarmStatus, AlarmStatusEnum } from '../_utils/enum';
 
 let schema = {
   name: {
@@ -10,40 +10,29 @@ let schema = {
   triggerValue: {
     type: Number
   },
-  triggerRequirment: {
-    type: String,
-    enum: alarmTriggerRequirment,
-    default: AlarmTriggerRequirmentEnum.BOTH
+  sensorId: {
+    type: Schema.ObjectId
   },
-  triggerId: {
-    type: Schema.ObjectId,
-    virtualPopulation: {
-      virtualPopulation: {
-        odinAutoPopulation: true,
-        as: 'trigger',
-        options: {
-          ref: 'Alert-trigger',
-          foreignField: '_id',
-          localField: 'triggerId',
-          justOne: true,
-        },
-      },
-    }
+  sensorCode: {
+    type: String
   },
   messageId: {
     type: Schema.ObjectId,
     virtualPopulation: {
-      virtualPopulation: {
-        odinAutoPopulation: true,
-        as: 'trigger',
-        options: {
-          ref: 'Alert-trigger',
-          foreignField: '_id',
-          localField: 'triggerId',
-          justOne: true,
-        },
+      odinAutoPopulation: true,
+      as: 'message',
+      options: {
+        ref: 'Message',
+        foreignField: '_id',
+        localField: 'messageId',
+        justOne: false,
       },
-    }
+    },
+  },
+  status: {
+    type: String,
+    enum: alarmStatus,
+    default: AlarmStatusEnum.TRIGGER,
   }
   // userId: {
   //   type: Schema.ObjectId,

@@ -1,12 +1,15 @@
 import config from '../../config';
 import logger from '../logger/index';
 import Message from '../../api/messages/model';
+import Alarm from '../../api/alarms/model';
 import Sensor from '../../api/sensors/model';
 import { checkMasterCertificate } from './getCertificate';
 import awsIot from 'aws-iot-device-sdk';
 import { IoTDataPlaneClient, GetThingShadowCommand } from '@aws-sdk/client-iot-data-plane';
 
 import os from 'os';
+import { AlarmStatusEnum } from '../../api/_utils/enum';
+import { createAlarms } from '../../api/alarms/middelware';
 
 const { awsMasterUrl, iotEndpoint, awsMasterName, accessKey, secretKey } = config;
 

@@ -1,4 +1,4 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose from 'mongoose';
 import ModelGenerator from '../_generator/modelGenerator';
 import ValidateSchema from '../_generator/validateSchema';
 

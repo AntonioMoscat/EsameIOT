@@ -15,7 +15,19 @@ const router = express.Router();
  * @apiSuccess {String} firstname Firstname of the User.
  * @apiSuccess {String} lastname  Lastname of the User.
  */
-router.get('/', query(bodySchema.query), actions.index);
+router.get('/', query({
+  ...bodySchema.query,
+  'timeStamp.$gte': {
+    type: Date,
+    paths: ['timeStamp'],
+    operator: '$gte'
+  },
+  'timeStamp.$lte': {
+    type: Date,
+    paths: ['timeStamp'],
+    operator: '$lte'
+  }
+}), actions.index);
 
 /**
  * @api {get} /messages/:id Get Specific Message
